@@ -1,11 +1,6 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-author: "Jesse Shaw"
-date: "March 15, 2015"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
+Jesse Shaw  
+March 15, 2015  
 
 
 ## Loading and preprocessing the data
@@ -14,7 +9,8 @@ output:
  1. Load the data (i.e. read.csv())
  2. Process/transform the data (if necessary) into a format suitable for your analysis
 
-```{r echo=TRUE}
+
+```r
 ##STEP 1 - Reproducible Research Peer Review 1
 ##This script will download the activity file required for Peer Review 1
 
@@ -45,8 +41,14 @@ df <- read.csv(filePath, as.is=TRUE)
 ```
 
 A portion of the original dataset is as follows:
-```{r echo=FALSE}
-print(df[1:5,])
+
+```
+##   steps       date interval
+## 1    NA 2012-10-01        0
+## 2    NA 2012-10-01        5
+## 3    NA 2012-10-01       10
+## 4    NA 2012-10-01       15
+## 5    NA 2012-10-01       20
 ```
 
 ## What is mean total number of steps taken per day?
@@ -55,7 +57,8 @@ print(df[1:5,])
  1. Make a histogram of the total number of steps taken each day
  2. Calculate and report the mean and median total number of steps taken per day
 
-```{r echo=TRUE}
+
+```r
 ##STEP 2 - Reproducible Research Peer Review 1
 ##This script will explore the activity data by generating a histogram of 
 ##complete cases and calculate base statistics.
@@ -72,19 +75,25 @@ hist(df_steps_per_day$steps,
      main="ACTIVITY MONITORING (STEPS)",
      breaks=10,
      xlab="Total Steps Per Day")
+```
 
+![](./PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+
+```r
 #Calculate Mean And Median Steps Per Day
 ave_steps <- mean(df_steps_per_day$steps)
 median_steps <- median(df_steps_per_day$steps)
 ```
 
 Mean:
-```{r echo=FALSE}
-print(ave_steps)
+
+```
+## [1] 10766.19
 ```
 Median:
-```{r echo=FALSE}
-print(median_steps)
+
+```
+## [1] 10765
 ```
 
 
@@ -94,7 +103,8 @@ print(median_steps)
  1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
  2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-```{r echo=TRUE}
+
+```r
 ##STEP 3 - Reproducible Research Peer Review 1
 ##This script will reduce data to days and generate an average 5 minute interval for all days
 ##df_no_NA is used from Step2 which has NAs ommitted
@@ -110,14 +120,20 @@ plot(df_mean_steps$interval,
      main="", 
      xlab="5 Minute Intervals", 
      ylab="Average Steps")
+```
 
+![](./PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
+
+```r
 ##Observation With The Maximum Number Of Steps
 max_steps <- df_mean_steps [which.max(df_mean_steps$steps), ]
 ```
 
 Interval with MAX steps:
-```{r echo=FALSE}
-print(max_steps)
+
+```
+##     interval    steps
+## 104      835 206.1698
 ```
 
 ## Imputing missing values
@@ -128,7 +144,8 @@ print(max_steps)
  3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
  4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
-```{r echo=TRUE}
+
+```r
 ##STEP 4 - Reproducible Research Peer Review 1
 ##This script will count the number of NA observations and then replace NAs with approximated values 
 ##by creating a function to impute them
@@ -141,11 +158,13 @@ NA_values <- sum(df_NAs)
 ```
 
 Number of missing values (NAs):
-```{r echo=FALSE}
-print(NA_values)
+
+```
+## [1] 2304
 ```
 
-```{r echo=TRUE}
+
+```r
 ##STEP 4 - Reproducible Research Peer Review 1 (Continued...)
 ##Impute NAs Function
 imputeNA <- function(steps, interval){
@@ -172,27 +191,33 @@ hist(df_steps_per_day_imputed$steps,
      main="ACTIVITY MONITORING (STEPS w/IMPUTED)",
      breaks=10,
      xlab="Total Steps Per Day")
+```
 
+![](./PA1_template_files/figure-html/unnamed-chunk-10-1.png) 
+
+```r
 #Calculate Mean And Median Steps Per Day
 ave_steps_imputed <- mean(df_steps_per_day_imputed$steps)
 median_steps_imputed <- median(df_steps_per_day_imputed$steps)
 ```
 
 New mean with imputed values:
-```{r echo=FALSE}
-print(ave_steps_imputed)
+
+```
+## [1] 10766.19
 ```
 
 New median with imputed values:
-```{r echo=FALSE}
-print(median_steps_imputed)
+
+```
+## [1] 10766.19
 ```
 
 The imputed mean does not vary while median values only vary slightly since a 5 minute interval average was used to replace NA values.
 
-Mean: `r as.character(floor(as.numeric(ave_steps)))` to `r as.character(floor(as.numeric(ave_steps_imputed)))`
+Mean: 10766 to 10766
 
-Median: `r as.character(floor(as.numeric(median_steps)))` to `r as.character(floor(as.numeric(median_steps_imputed)))`
+Median: 10765 to 10766
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -201,7 +226,8 @@ Median: `r as.character(floor(as.numeric(median_steps)))` to `r as.character(flo
  1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
  2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was creating using simulated data:
 
-```{r echo=TRUE}
+
+```r
 ##STEP 5 - Reproducible Research Peer Review 1
 ##This script will compare activity between weekdays and weekends using df_imputed from Step4
 
@@ -235,5 +261,7 @@ step_panel <- ggplot(df_steps_per_day_type_imputed, aes(interval, steps))+geom_l
 
 print(step_panel)
 ```
+
+![](./PA1_template_files/figure-html/unnamed-chunk-13-1.png) 
 
 From the graphs, it appears as though people move around more on the weekends.
